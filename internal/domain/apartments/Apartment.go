@@ -1,8 +1,11 @@
 package apartments
 
-import "github.com/mehedimayall/bookify-go/internal/domain/shared"
+import (
+	"github.com/mehedimayall/bookify-go/internal/domain/abstractions"
+	"github.com/mehedimayall/bookify-go/internal/domain/shared"
+)
 
 type Apartment struct {
-	shared.BaseEntity
+	abstractions.EntityBase
 	name shared.Name
 }
