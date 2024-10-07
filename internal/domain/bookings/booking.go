@@ -29,7 +29,7 @@ type Booking struct {
 	cancelledOnUtc time.Time
 }
 
-func NewBooking(apartment *apartments.Apartment, userId shared.UUID,
+func Reserve(apartment *apartments.Apartment, userId shared.UUID,
 	duration *DateRange) (*Booking, error) {
 	pricingService := PricingService{}
 	pricingDetails, err := pricingService.CalculatePrice(*apartment, *duration)
@@ -52,4 +52,48 @@ func NewBooking(apartment *apartments.Apartment, userId shared.UUID,
 		status:       BookingStatuses.reserved,
 		createdOnUtc: time.Now().UTC(),
 	}, nil
+}
+
+func (b *Booking) Confirm() error {
+	if b.status != BookingStatuses.reserved {
+		return NotReserved()
+	}
+
+	b.status = BookingStatuses.confirmed
+	b.confirmedOnUtc = time.Now()
+
+	return nil
+}
+
+func (b *Booking) Reject() error {
+	if b.status != BookingStatuses.reserved {
+		return NotReserved()
+	}
+
+	b.status = BookingStatuses.rejected
+	b.rejectedOnUtc = time.Now()
+
+	return nil
+}
+
+func (b *Booking) Cancel() error {
+	if b.status != BookingStatuses.reserved {
+		return NotReserved()
+	}
+
+	b.status = BookingStatuses.cancelled
+	b.cancelledOnUtc = time.Now()
+
+	return nil
+}
+
+func (b *Booking) Complete() error {
+	if b.status != BookingStatuses.reserved {
+		return NotReserved()
+	}
+
+	b.status = BookingStatuses.completed
+	b.completedOnUtc = time.Now()
+
+	return nil
 }
