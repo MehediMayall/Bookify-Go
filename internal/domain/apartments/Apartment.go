@@ -19,8 +19,34 @@ type Apartment struct {
 }
 
 func NewApartment(
-	name, description, country, city, zipCode, state, street string,
-	priceAmount float32, priceCurrency string) (*Apartment, error) {
+	name shared.Name,
+	description Description,
+	address Address,
+	price shared.Money,
+	cleaningFee shared.Money,
+	amenities []Amenity) (*Apartment, error) {
 
-	return &Apartment{}, nil
+	return &Apartment{
+		name:        name,
+		description: description,
+		address:     address,
+		price:       price,
+		cleaningFee: cleaningFee,
+		amenities:   amenities,
+	}, nil
+}
+
+func (a *Apartment) ApartmentId() shared.UUID {
+	return a.Id
+}
+func (a *Apartment) Price() shared.Money {
+	return a.price
+}
+
+func (a *Apartment) CleaningFee() shared.Money {
+	return a.cleaningFee
+}
+
+func (a *Apartment) Amenities() []Amenity {
+	return a.amenities
 }

@@ -1,18 +1,18 @@
 package shared
 
-import "errors"
+import (
+	"github.com/google/uuid"
+)
 
 type UUID struct {
 	value string
 }
 
-func NewUUID(value string) (*UUID, error) {
+func NewUUID(value string) *UUID {
 	if value == "" {
-		return nil, errors.New("invalid uuid. please provide a valid uuid")
+		value = uuid.NewString()
 	}
-	return &UUID{
-		value: value,
-	}, nil
+	return &UUID{value: value}
 }
 
 func (n *UUID) ToString() string {

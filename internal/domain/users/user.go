@@ -1,7 +1,6 @@
 package users
 
 import (
-	"github.com/google/uuid"
 	"github.com/mehedimayall/bookify-go/internal/domain/abstractions"
 	"github.com/mehedimayall/bookify-go/internal/domain/shared"
 )
@@ -14,10 +13,6 @@ type User struct {
 }
 
 func NewUser(firstname, lastname, email string) (*User, error) {
-	userid, err := shared.NewUUID(uuid.NewString())
-	if err != nil {
-		return nil, err
-	}
 
 	Firstname, err := shared.NewName(firstname)
 	if err != nil {
@@ -35,11 +30,9 @@ func NewUser(firstname, lastname, email string) (*User, error) {
 	}
 
 	return &User{
-		EntityBase: abstractions.EntityBase{
-			Id: *userid,
-		},
-		FirstName: *Firstname,
-		LastName:  *Lastname,
-		Email:     *Email,
+		EntityBase: *abstractions.NewID(),
+		FirstName:  *Firstname,
+		LastName:   *Lastname,
+		Email:      *Email,
 	}, nil
 }

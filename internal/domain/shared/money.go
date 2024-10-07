@@ -27,3 +27,7 @@ func (n *Money) GetValue() float32 {
 func (n *Money) GetCurrency() Currency {
 	return n.currency
 }
+
+func (n *Money) Add(amount float32) {
+	n.amount += amount
+}
