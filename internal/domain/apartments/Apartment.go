@@ -9,11 +9,18 @@ import (
 
 type Apartment struct {
 	abstractions.EntityBase
-	Name            shared.Name
+	name            shared.Name
 	description     Description
 	address         Address
 	price           shared.Money
 	cleaningFee     shared.Money
 	amenities       []Amenity
 	lastBookedOnUtc time.Time
+}
+
+func NewApartment(
+	name, description, country, city, zipCode, state, street string,
+	priceAmount float32, priceCurrency string) (*Apartment, error) {
+
+	return &Apartment{}, nil
 }

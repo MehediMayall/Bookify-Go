@@ -15,6 +15,13 @@ func NewCurrency(value string) (*Currency, error) {
 	}, nil
 }
 
+func (c *Currency) GetAll() []Currency {
+	return []Currency{
+		*c.USD(),
+		*c.EUR(),
+	}
+}
+
 func (n *Currency) USD() *Currency {
 	return &Currency{value: "USD"}
 }

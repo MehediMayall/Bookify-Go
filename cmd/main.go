@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mehedimayall/bookify-go/internal/domain/apartments"
+	"github.com/mehedimayall/bookify-go/internal/domain/shared"
 	"github.com/mehedimayall/bookify-go/internal/domain/users"
 )
 
@@ -23,6 +24,9 @@ func main() {
 	print(user.FirstName.ToString())
 	print(user)
 
+	currency := &shared.Currency{}
+
+	print(currency.GetAll())
 	print(apartments.Amenities.MountainView)
 
 }

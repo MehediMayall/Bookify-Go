@@ -8,9 +8,9 @@ import (
 
 type User struct {
 	abstractions.EntityBase
-	FirstName shared.Name `json:"firstname"`
-	LastName  shared.Name `json:"lastname"`
-	Email     Email       `json:"email"`
+	FirstName shared.Name
+	LastName  shared.Name
+	Email     Email
 }
 
 func NewUser(firstname, lastname, email string) (*User, error) {
