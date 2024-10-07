@@ -1,10 +1,45 @@
 package users
 
-import "github.com/mehedimayall/bookify-go/internal/domain/shared"
+import (
+	"github.com/google/uuid"
+	"github.com/mehedimayall/bookify-go/internal/domain/abstractions"
+	"github.com/mehedimayall/bookify-go/internal/domain/shared"
+)
 
 type User struct {
-	shared.BaseEntity
-	FirstName shared.Name  `json:"firstname"`
-	LastName  shared.Name  `json:"lastname"`
-	Email     shared.Email `json:"email"`
+	abstractions.EntityBase
+	FirstName shared.Name `json:"firstname"`
+	LastName  shared.Name `json:"lastname"`
+	Email     Email       `json:"email"`
+}
+
+func NewUser(firstname, lastname, email string) (*User, error) {
+	userid, err := shared.NewUUID(uuid.NewString())
+	if err != nil {
+		return nil, err
+	}
+
+	Firstname, err := shared.NewName(firstname)
+	if err != nil {
+		return nil, err
+	}
+
+	Lastname, err := shared.NewName(lastname)
+	if err != nil {
+		return nil, err
+	}
+
+	Email, err := NewEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &User{
+		EntityBase: abstractions.EntityBase{
+			Id: *userid,
+		},
+		FirstName: *Firstname,
+		LastName:  *Lastname,
+		Email:     *Email,
+	}, nil
 }
