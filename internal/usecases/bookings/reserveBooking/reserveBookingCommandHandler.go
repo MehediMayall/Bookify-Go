@@ -9,7 +9,7 @@ import (
 	"github.com/mehedimayall/bookify-go/internal/domain/users"
 )
 
-type ReserveBookingCommand struct {
+type ReserveBookingCommandHandler struct {
 	bookingRepo    bookings.IBookingRepository
 	userRepo       users.IUserRepository
 	apartmentRepo  apartments.IApartmentRepository
@@ -20,9 +20,9 @@ func NewReserveBookingCommand(
 	bookingRepo bookings.IBookingRepository,
 	userRepo users.IUserRepository,
 	apartmentRepo apartments.IApartmentRepository,
-	pricingService bookings.PricingService) *ReserveBookingCommand {
+	pricingService bookings.PricingService) *ReserveBookingCommandHandler {
 
-	return &ReserveBookingCommand{
+	return &ReserveBookingCommandHandler{
 		bookingRepo,
 		userRepo,
 		apartmentRepo,
@@ -30,7 +30,7 @@ func NewReserveBookingCommand(
 	}
 }
 
-func (h *ReserveBookingCommand) Handle(
+func (h *ReserveBookingCommandHandler) Handle(
 	userid, apartmentid, bookingid string,
 	startDate, endDate time.Time) (string, error) {
 
@@ -59,6 +59,8 @@ func (h *ReserveBookingCommand) Handle(
 	if err == nil {
 		return "", err
 	}
+
+	h.bookingRepo.Add(booking)
 
 	return booking.Id.ToString(), nil
 

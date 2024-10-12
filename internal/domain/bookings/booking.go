@@ -110,3 +110,7 @@ func (b *Booking) Complete() error {
 
 	return nil
 }
+
+func (b *Booking) GetUserId() shared.UUID {
+	return b.userId
+}

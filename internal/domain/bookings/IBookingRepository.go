@@ -5,6 +5,7 @@ import (
 )
 
 type IBookingRepository interface {
+	Add(booking *Booking) string
 	GetById(id string) *Booking
 	IsOverlaping(apartment apartments.Apartment, duration DateRange) bool
 }
