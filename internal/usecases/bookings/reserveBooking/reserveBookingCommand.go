@@ -23,10 +23,10 @@ func NewReserveBookingCommand(
 	pricingService bookings.PricingService) *ReserveBookingCommand {
 
 	return &ReserveBookingCommand{
-		bookingRepo:    bookingRepo,
-		userRepo:       userRepo,
-		apartmentRepo:  apartmentRepo,
-		pricingService: pricingService,
+		bookingRepo,
+		userRepo,
+		apartmentRepo,
+		pricingService,
 	}
 }
 

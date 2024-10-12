@@ -5,6 +5,7 @@ import (
 
 	"github.com/mehedimayall/bookify-go/internal/domain/abstractions"
 	"github.com/mehedimayall/bookify-go/internal/domain/apartments"
+	"github.com/mehedimayall/bookify-go/internal/domain/bookings/events"
 	"github.com/mehedimayall/bookify-go/internal/domain/shared"
 )
 
@@ -38,7 +39,7 @@ func Reserve(apartment *apartments.Apartment, userId shared.UUID,
 		return nil, err
 	}
 
-	return &Booking{
+	booking := Booking{
 		EntityBase: *abstractions.NewID(),
 		aparmentId: apartment.Id,
 		userId:     userId,
@@ -51,7 +52,11 @@ func Reserve(apartment *apartments.Apartment, userId shared.UUID,
 
 		status:       BookingStatuses.reserved,
 		createdOnUtc: time.Now().UTC(),
-	}, nil
+	}
+
+	booking.AddDomainEvent(events.NewBookingReservedDomainEvent(booking.Id))
+
+	return &booking, nil
 }
 
 func (b *Booking) Confirm() error {
@@ -61,6 +66,8 @@ func (b *Booking) Confirm() error {
 
 	b.status = BookingStatuses.confirmed
 	b.confirmedOnUtc = time.Now()
+
+	b.AddDomainEvent(events.NewBookingConfirmedDomainEvent(b.Id))
 
 	return nil
 }
@@ -73,6 +80,8 @@ func (b *Booking) Reject() error {
 	b.status = BookingStatuses.rejected
 	b.rejectedOnUtc = time.Now()
 
+	b.AddDomainEvent(events.NewBookingRejectedDomainEvent(b.Id))
+
 	return nil
 }
 
@@ -84,6 +93,8 @@ func (b *Booking) Cancel() error {
 	b.status = BookingStatuses.cancelled
 	b.cancelledOnUtc = time.Now()
 
+	b.AddDomainEvent(events.NewBookingCancelledDomainEvent(b.Id))
+
 	return nil
 }
 
@@ -94,6 +105,8 @@ func (b *Booking) Complete() error {
 
 	b.status = BookingStatuses.completed
 	b.completedOnUtc = time.Now()
+
+	b.AddDomainEvent(events.NewBookingCompletedDomainEvent(b.Id))
 
 	return nil
 }
