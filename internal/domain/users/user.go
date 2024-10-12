@@ -3,6 +3,7 @@ package users
 import (
 	"github.com/mehedimayall/bookify-go/internal/domain/abstractions"
 	"github.com/mehedimayall/bookify-go/internal/domain/shared"
+	"github.com/mehedimayall/bookify-go/internal/domain/users/events"
 )
 
 type User struct {
@@ -29,10 +30,14 @@ func NewUser(firstname, lastname, email string) (*User, error) {
 		return nil, err
 	}
 
-	return &User{
+	user := User{
 		EntityBase: *abstractions.NewID(),
 		FirstName:  *Firstname,
 		LastName:   *Lastname,
 		Email:      *Email,
-	}, nil
+	}
+
+	user.AddDomainEvent(events.NewUserCreatedDomainEvent(user.Id))
+
+	return &user, nil
 }
